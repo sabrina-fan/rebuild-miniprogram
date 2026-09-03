@@ -29,6 +29,8 @@ Use Computer Use for WeChat DevTools, targeting controls by app, window, role, a
 1. Do not read or print `.env` contents.
 2. Run the build command recorded above. Require exit code 0 and a successful build message.
 3. Confirm `app.json` and `project.config.json` exist in the artifact. If the build fails, stop and report the error; never open stale output as if it were current.
+4. If the project defines separate local and release build variants (e.g. `build:mp-weixin` plus `build:mp-weixin:release` taking the API base URL from an env var), both usually write the same `dist/build/mp-weixin` directory. Pick the variant that matches the user's intent. A local build silently overwrites a release artifact — build logs and size checks look identical — so after producing a release package, never run the local variant (including DevTools-triggered recompiles) before it is uploaded.
+5. When the build embeds an API base URL at compile time, verify the artifact actually contains the intended URL before reporting success: grep the generated `dist` for the expected domain and confirm no development/loopback URL remains (e.g. `grep -rl "<domain>" dist/build/mp-weixin` must match; `grep -rl "127.0.0.1" dist` should be empty unless the local variant was intended).
 
 ## Relaunch and import
 
