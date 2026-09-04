@@ -1,6 +1,6 @@
 ---
 name: rebuild-miniprogram
-description: Rebuild a WeChat Mini Program after any source change and verify the live result in WeChat DevTools. Use whenever the user asks to recompile, refresh, reopen, re-import, rebuild, preview, or verify the mini program — including casual asks like "刷新一下小程序" or "看下最新效果" after code changes, or when DevTools seems to show stale output. Runs the real build, fully restarts DevTools, imports only the generated mp-weixin directory, compiles, and verifies. Works for uni-app and any project that produces an mp-weixin build.
+description: Rebuild a WeChat Mini Program after any source change and verify the live result in WeChat DevTools. Use whenever the user asks to recompile, refresh, reopen, re-import, rebuild, preview, or verify the mini program — including casual asks like "刷新一下小程序" or "看下最新效果" after code changes, or when DevTools seems to show stale output. Runs the real build, fully restarts DevTools, imports only the generated mp-weixin directory, compiles, and verifies. Works for uni-app and any project that produces an mp-weixin build. Do NOT use for writing or modifying mini-program source code, debugging business logic, or running unit tests — those belong to normal development workflow.
 ---
 
 # Rebuild Mini Program
