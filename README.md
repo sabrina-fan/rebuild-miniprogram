@@ -1,49 +1,49 @@
 # rebuild-miniprogram
 
-Rebuild a WeChat Mini Program after any source change and verify the live result in WeChat DevTools — not just run a build command and assume it worked.
+源码变更后重新编译微信小程序，并在微信开发者工具里验证真实运行结果——不是只跑一下 build 命令就当成成功了。
 
-## Why
+## 为什么需要
 
-DevTools happily keeps serving a stale compiled artifact that *looks* current. Hot reload can silently fail, and a zero-exit build doesn't guarantee the simulator picked up the new output. Debugging against a stale build wastes hours.
+开发者工具会持续加载一个看起来是最新的旧编译产物。热重载可能静默失败，build 命令退出码为 0 也不代表模拟器已经加载了新代码。对着一个过时的产物调试，白白浪费好几个小时。
 
-This skill runs the real build, fully restarts DevTools, imports only the generated `mp-weixin` directory, compiles, and verifies the result is actually live.
+这个 skill 跑真正的构建，完全重启开发者工具，只导入新生成的 `mp-weixin` 目录，编译，然后验证结果确实是实时的。
 
-## Install
+## 安装
 
-### Option A — let your agent install it
+### 方式 A — 交给 agent 安装
 
-Give your agent this repo URL and ask it to add the skill:
+把仓库地址给你的 agent，让它安装：
 
 ```
 https://github.com/sabrina-fan/rebuild-miniprogram
 ```
 
-### Option B — manual
+### 方式 B — 手动安装
 
-Copy the `rebuild-miniprogram/` directory into your agent's skills folder (e.g. `~/.zcode/skills/`).
+把 `rebuild-miniprogram/` 目录复制到你的 agent skill 目录下（如 `~/.zcode/skills/`）。
 
-## Requirements
+## 依赖
 
-- WeChat DevTools installed and accessible.
-- A project that produces an `mp-weixin` build (uni-app or any compatible framework).
-- Computer Use capability for driving the DevTools GUI (the skill targets controls by app/window/label, not screen coordinates).
+- 已安装微信开发者工具并可访问。
+- 一个能产出 `mp-weixin` 构建产物的项目（uni-app 或任何兼容框架）。
+- Computer Use 能力，用于驱动开发者工具 GUI（skill 按 app/window/label 定位控件，不用屏幕坐标）。
 
-## Usage
+## 使用方法
 
-Trigger it naturally — "刷新一下小程序", "看下最新效果", "rebuild the mini program", or any time DevTools might be showing stale output.
+自然语言触发即可——"刷新一下小程序"、"看下最新效果"、"rebuild the mini program"，或任何开发者工具可能显示旧产物的情况。
 
-The skill will:
+skill 会依次执行：
 
-1. Detect the build command and artifact path from `package.json`.
-2. Run the build and confirm the artifact has `app.json` + `project.config.json`.
-3. Quit DevTools completely, clear stale caches, and re-import only the generated `mp-weixin` directory.
-4. Compile and verify four success conditions: no compile error, expected page renders, project identified as `mp-weixin`, window stays open.
+1. 从 `package.json` 检测构建命令和产物路径。
+2. 跑构建，确认产物包含 `app.json` 和 `project.config.json`。
+3. 完全退出开发者工具，清理旧缓存，重新导入新生成的 `mp-weixin` 目录。
+4. 编译并验证四个成功条件：无编译错误、模拟器渲染预期页面、项目标识为 `mp-weixin`、窗口保持打开。
 
-## Compatibility
+## 兼容性
 
-- **macOS** — primary platform (uses Computer Use for DevTools GUI automation).
-- **Windows / Linux** — should work if your agent has equivalent GUI automation capability, but not formally tested.
+- **macOS** — 主要平台（用 Computer Use 驱动开发者工具 GUI）。
+- **Windows / Linux** — 如果你的 agent 有等效的 GUI 自动化能力，应该也能用，但未正式测试。
 
-## Security & Boundary
+## 安全与边界
 
-This skill handles **rebuild + verify**. It does not write or modify source code, debug business logic, or run unit tests.
+这个 skill 只负责**重新构建 + 验证**。不写或改源码、不调试业务逻辑、不跑单元测试。
